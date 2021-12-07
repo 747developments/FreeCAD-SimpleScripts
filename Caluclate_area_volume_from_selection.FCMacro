@@ -1,0 +1,61 @@
+from PySide import QtGui
+#QtGui.QMessageBox.information(None, "Apollo program", "Houston, we have a problem")
+
+######## CLEAR WINDOWS and console
+#mw=Gui.getMainWindow()
+#c=mw.findChild(QtGui.QPlainTextEdit, "Python console")
+#c.clear()
+#r=mw.findChild(QtGui.QTextEdit, "Report view")
+#r.clear()
+
+######## UNITS conversion
+mm_2_m = 1e-3
+mm_sq_2_m_sq = 1e-6
+mm_cb_2_m_cb = 1e-9
+
+selected_items = Gui.Selection.getSelection()
+print ("\n****************\nSelected items: 	%d" % (len(selected_items)))
+
+counter = 0
+total_shape_volume = 0.0
+total_shape_area = 0.0 
+cumulative_length = 0.0
+cumulative_area = 0.0
+horizontal_area = 0.0
+vertical_area = 0.0
+perimeter_length = 0.0
+
+for itms in selected_items:
+	if hasattr(itms, 'Shape'):
+		total_shape_area += itms.Shape.Area * mm_sq_2_m_sq
+		total_shape_volume += itms.Shape.Volume *mm_cb_2_m_cb
+	else:
+		print("	-> Item %d: 	does not have Shape attribute" % counter)
+
+	if hasattr(itms, 'Area'):
+		cumulative_area += float(itms.Area) * mm_sq_2_m_sq
+	if hasattr(itms, 'Length'):	
+		cumulative_length += float(itms.Length) * mm_2_m
+	if hasattr(itms, 'HorizontalArea'):
+		horizontal_area += float(itms.HorizontalArea) * mm_sq_2_m_sq
+	if hasattr(itms, 'VerticalArea'):
+		vertical_area += float(itms.VerticalArea) * mm_sq_2_m_sq
+	if hasattr(itms, 'PerimeterLength'):
+		perimeter_length += float(itms.PerimeterLength)  * mm_2_m
+
+	counter += 1
+
+if(total_shape_area > 0):
+	print("Shape Area:      		%0.2f 	m2" % (total_shape_area))
+if(total_shape_volume > 0):
+	print("Shape Volume:        	%0.2f 	m3" % (total_shape_volume))
+if(cumulative_area > 0):	
+	print("Area:      			%0.2f 	m2" % (cumulative_area))
+if(cumulative_length > 0):
+	print("Length:   			%0.2f 	m" % (cumulative_length))
+if(horizontal_area > 0):
+	print("Horizontal area:    	%0.2f 	m2" % (horizontal_area))
+if(vertical_area > 0):
+	print("Vertical area:   		%0.2f 	m2" % (vertical_area))
+if(perimeter_length > 0):
+	print("Perimeter length:  	%0.2f 	m" % (perimeter_length))
